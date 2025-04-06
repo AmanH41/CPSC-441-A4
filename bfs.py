@@ -1,6 +1,6 @@
 from collections import deque
 
-def exhaustive_bfs(self, start_province, end_province, optimization_criterion):  
+def bfs(self, start_province, end_province, optimization_criterion):  
     # Convert province names to their corresponding indices
     start_index = self.vertex_index.get(start_province)
     end_index = self.vertex_index.get(end_province)
@@ -41,11 +41,6 @@ def exhaustive_bfs(self, start_province, end_province, optimization_criterion):
                 
                 # Add this new path to the queue for further exploration
                 exploration_queue.append((neighbor_index, new_path, new_cost))
-
-    
-    # If no paths reached the destination
-    if not successful_paths:
-        return None, float('inf')
     
     # Find the path with minimum cost according to our criterion
     best_path_indices, minimum_cost = min(successful_paths, key=lambda path_data: path_data[1])

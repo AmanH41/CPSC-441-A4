@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class Graph:
     def __init__(self, vertices):
         self.size = len(vertices)
@@ -15,18 +18,6 @@ class Graph:
                 'time': time,
                 'dementors': dementors
             }
-
-    def get_path(self, start, end, criterion):
-        if criterion not in ['hops', 'distance', 'time', 'dementors']:
-            raise ValueError("Invalid criterion")
-
-        start_idx = self.vertex_index.get(start)
-        end_idx = self.vertex_index.get(end)
-        if start_idx is None or end_idx is None:
-            return None
-
-        if criterion == 'hops':
-            return self._bfs_shortest_hops(start_idx, end_idx)
-        else:
-            return self._dijkstra(start_idx, end_idx, criterion)
-
+        
+        # If no path found, return None and infinite cost
+        return None        
