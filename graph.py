@@ -1,6 +1,3 @@
-from collections import deque
-
-
 class Graph:
     def __init__(self, vertices):
         self.size = len(vertices)
@@ -19,5 +16,4 @@ class Graph:
                 'dementors': dementors
             }
         
-        # If no path found, return None and infinite cost
         return None        
