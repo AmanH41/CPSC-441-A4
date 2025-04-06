@@ -1,24 +1,32 @@
 class Graph:
-    def __init__(self, size):
-        self.adj_matrix = [[0] * size for _ in range(size)]
-        self.size = size
-        self.vertex_data = [''] * size  
+    def __init__(self, vertices):
+        self.size = len(vertices)
+        self.vertex_data = vertices
+        self.vertex_index = {v: i for i, v in enumerate(vertices)}
+        self.adj_matrix = [[None for _ in range(self.size)] for _ in range(self.size)]
 
-    #create path from vertex u to v (directed) 
-    def add_edge(self, u, v, weight):
-        if 0 <= u < self.size and 0 <= v < self.size:
-            self.adj_matrix[u][v] = weight
-            #self.adj_matrix[v][u] = weight   For undirected graph
+    def add_edge(self, u, v, hops, distance, time, dementors):
+        if u in self.vertex_index and v in self.vertex_index:
+            u_idx = self.vertex_index[u]
+            v_idx = self.vertex_index[v]
+            self.adj_matrix[u_idx][v_idx] = {
+                'hops': hops,
+                'distance': distance,
+                'time': time,
+                'dementors': dementors
+            }
 
-    def add_vertex_data(self, vertex, data):
-        if 0 <= vertex < self.size:
-            self.vertex_data[vertex] = data
+    def get_path(self, start, end, criterion):
+        if criterion not in ['hops', 'distance', 'time', 'dementors']:
+            raise ValueError("Invalid criterion")
 
-    def print_graph(self):
-        print("Adjacency Matrix:")
-        for row in self.adj_matrix:
-            print(' '.join(map(str, row)))
-        print("\nVertex Data:")
-        for vertex, data in enumerate(self.vertex_data):
-            print(f"Vertex {vertex}: {data}")
-            
+        start_idx = self.vertex_index.get(start)
+        end_idx = self.vertex_index.get(end)
+        if start_idx is None or end_idx is None:
+            return None
+
+        if criterion == 'hops':
+            return self._bfs_shortest_hops(start_idx, end_idx)
+        else:
+            return self._dijkstra(start_idx, end_idx, criterion)
+
